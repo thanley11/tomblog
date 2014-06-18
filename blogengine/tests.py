@@ -29,41 +29,43 @@ class PostTest(TestCase):
 class AdminTest(LiveServerTestCase):
     fixtures = ['users.json']
 
-    def test_login(self):
-        c = Client()
+    def setup(self):
+        self.client = Client()
 
-        response = c.get('/admin/')
+    def test_login(self):
+
+        response = self.client.get('/admin/')
 
         self.assertEquals(response.status_code, 200)
 
         self.assertTrue('Log in' in response.content)
 
-        c.login(username='bobsmith',password='password')
+        self.client.login(username='bobsmith',password='password')
 
-        response = c.get('/admin/')
+        response = self.client.get('/admin/')
         self.assertEquals(response.status_code, 200)
 
         self.assertTrue('Log out' in response.content)
     
     def test_logout(self):
-        # Get client
-        c = Client()
 
         # Log in user
-        c.login(username='bobsmith',password='password')
+        self.client.login(username='bobsmith',password='password')
+        
 
         # Check the response
-        response = c.get('/admin/')
+        response = self.client.get('/admin/')
+
         self.assertEquals(response.status_code, 200)
        
         # Check 'log out' in response
         self.assertTrue('Log out' in response.content)
             
         # Log out user
-        c.logout()
+        self.client.logout()
 
         # Check the response code
-        response = c.get('/admin/')
+        response = self.client.get('/admin/')
         self.assertEquals(response.status_code, 200)
        
         # Check 'log in' in response
