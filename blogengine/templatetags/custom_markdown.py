@@ -1,9 +1,9 @@
-import markdown
-
 from django import template
 from django.template.defaultfilters import stringfilter
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
+
+import markdown
 
 register = template.Library()
 
