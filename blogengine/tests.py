@@ -131,8 +131,8 @@ class AdminTest(LiveServerTestCase):
         post = Post()
         post.title = 'My first post'
         post.text = 'This is my first post'
-        post.pub_date = timezone.now()
         post.slug = 'my-first-post'
+        post.pub_date = timezone.now()
         post.save()
 
         all_posts = Post.objects.all()
@@ -191,7 +191,7 @@ class PostViewTest(LiveServerTestCase):
         only_post = all_posts[0]
         self.assertEquals(only_post, post)
 
-        post_url = only_post.get_absolute_urls()
+        post_url = only_post.get_absolute_url()
 
         response = self.client.get(post_url)
         self.assertEquals(response.status_code, 200)
