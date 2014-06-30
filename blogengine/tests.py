@@ -8,12 +8,17 @@ import markdown
 
 class PostTest(TestCase):
     def test_create_post_(self):
+
+        author = User.objects.create_user('testuser', 'user@example.com', 'password')
+        author.save()
+
         post = Post()
+
         post.title = 'My first post'
         post.text = 'This is my first blog post'
         post.slug = 'my-first-post'
         post.pub_date = timezone.now()
-
+        post.author = author
         post.save()
 
         all_posts = Post.objects.all()
@@ -30,6 +35,9 @@ class PostTest(TestCase):
         self.assertEquals(only_post.pub_date.hour, post.pub_date.hour)
         self.assertEquals(only_post.pub_date.minute, post.pub_date.minute)
         self.assertEquals(only_post.pub_date.second, post.pub_date.second)
+        self.assertEquals(only_post.author.username, 'testuser')
+        self.assertEquals(only_post.author.email, 'user@example.com')
+
 
 class BaseAcceptanceTest(LiveServerTestCase):
     def setUp(self):
@@ -157,11 +165,15 @@ class AdminTest(BaseAcceptanceTest):
 
 class PostViewTest(BaseAcceptanceTest):
     def test_index(self):
+        author = User.objects.create_user('testuser', 'user@example.com', 'password')
+        author.save()
+
         post = Post()
         post.title = "My first post"
         post.text = 'This is [my first blog post](http://127.0.0.1:8000/)'
         post.pub_date = timezone.now()
         post.slug = 'my-first-post'
+        post.author = author
         post.save()
 
         all_posts = Post.objects.all()
@@ -181,11 +193,16 @@ class PostViewTest(BaseAcceptanceTest):
         self.assertTrue('<a href="http://127.0.0.1:8000/">my first blog post</a>' in response.content)
 
     def test_post_page(self):
+
+        author = User.objects.create_user('testuser', 'user@example.com', 'password')
+        author.save()
+
         post = Post()
         post.title = "My first post"
         post.text = 'This is [my first blog post](http://127.0.0.1:8000/)'
         post.pub_date = timezone.now()
         post.slug = 'my-first-post'
+        post.author = author
         post.save()
 
         all_posts = Post.objects.all()
