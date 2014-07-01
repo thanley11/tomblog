@@ -9,7 +9,7 @@
         <title>{% block title %}My Django Blog{% endblock %}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <link rel="alternate" type="application/rss+xml" title="Blog Posts" href="/feeds/posts/">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         {% load staticfiles %}
         
@@ -17,6 +17,9 @@
         <link rel="stylesheet" href="{% static 'bower_components/html5-boilerplate/css/main.css' %}">
         <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap-theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+        <link rel="stylesheet" href="{% static 'css/code.css' %}">
+
         <script src="{% static 'bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js' %}"></script>
     </head>
     <body>
@@ -42,10 +45,15 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="/">My Django Blog</a>
+                </div>
                     <div class="collapse navbar-collapse" id="header-nav">
                         <ul class="nav navbar-nav">
-                            <li>Text goes here</li>
-                            <li> Is there anything?</li>
+                            {% load flatpages %}
+                            {% get_flatpages as flatpages %}
+                            {% for flatpage in flatpages %}
+                                <li><a href="{{ flatpage.url }}">{{ flatpage.title }}</a></li>
+                            {% endfor %}
+                                <li><a href="/feeds/posts/">RSS Feed</a></li>
                         </ul>
                     </div>
                 </div>
