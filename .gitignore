@@ -2,3 +2,4 @@ venv/
 *.pyc
 *.ropeproject
 blogengine/static/bower_components/
+static-files/
